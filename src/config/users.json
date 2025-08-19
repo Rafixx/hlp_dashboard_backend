@@ -1,0 +1,10 @@
+[
+  {
+    "id_usuario": 1,
+    "username": "developer",
+    "passwordhash": "$2b$10$npg3lX32Q6ubvMkaAp4KbOlzptfhMYDElP/Z/amUJ1aA/tWnB7QX6",
+    "nombre": "Developer",
+    "email": "developer@example.com",
+    "rol_name": "admin"
+  }
+]
