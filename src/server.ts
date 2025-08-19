@@ -1,6 +1,6 @@
 import app from './app';
-import { sequelize } from './config/db.config';
-import { initModels } from './models';
+// import { sequelize } from './config/db.config';
+// import { initModels } from './models';
 
 const PORT = process.env.PORT || 3000;
 
