@@ -1,4 +1,4 @@
-import bcrypt from 'bcrypt';
+import bcrypt from 'bcryptjs';
 import { UsuarioRepository } from '../repositories/usuario.repository';
 import { BadRequestError } from '../errors/BadRequestError';
 
