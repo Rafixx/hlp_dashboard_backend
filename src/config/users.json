@@ -1,7 +1,7 @@
 [
   {
     "id_usuario": 1,
-    "username": "developer",
+    "username": "demo",
     "passwordhash": "$2b$10$npg3lX32Q6ubvMkaAp4KbOlzptfhMYDElP/Z/amUJ1aA/tWnB7QX6",
     "nombre": "Developer",
     "email": "developer@example.com",
