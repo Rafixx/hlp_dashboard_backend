@@ -1,4 +1,5 @@
 import app from './app';
+// import { executeQueryIRIS, executeQueryInformix } from './config/connection';
 // import { sequelize } from './config/db.config';
 // import { initModels } from './models';
 
@@ -11,7 +12,9 @@ const startServer = async () => {
 
     // await sequelize.authenticate();
     // console.log('Conexión a la base de datos establecida correctamente.');
-
+    // const consulta = await executeQueryInformix('SELECT * FROM camas');
+    // const consulta2 = await executeQueryIRIS('SELECT * FROM constantes');
+    
     app.listen(PORT, () => {
       console.log(`Servidor escuchando en el puerto ${PORT}`);
     });
