@@ -62,6 +62,12 @@ const executeQuery = async (connectionString: string, query: string, dbName: str
 };
 
 // ------------ Informix (elige DSN por entorno) ------------
+
+// # NOTA: Este servidor de desarrollo apunta por defecto al entorno PRE.
+// # Solo puede existir una entrada activa para cada DBSERVERNAME (ej. "db1").
+// # Si se necesita trabajar contra PRO, comentar las entradas PRE y descomentar las PRO.
+// # IMPORTANTE: No pueden coexistir PRO y PRE a la vez en este cliente.
+
 const env = process.env.NODE_ENV?.toLowerCase() || 'development';
 const IFX_OC_DSN  = env === 'production' ? 'ifx_oc_PRO'  : 'ifx_oc_PRE';
 const IFX_IRIS_DSN= env === 'production' ? 'ifx_iris_PRO': 'ifx_iris_PRE';
