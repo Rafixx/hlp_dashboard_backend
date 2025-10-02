@@ -187,7 +187,7 @@ export class GenRepository {
     const sentenciaSQL = `
       -- ESCALAS REALIZADAS
       SELECT  DISTINCT
-          '+',
+      --    '+',
           mesc.nombre_esc AS nombre_escala,
           TO_CHAR(rdoesc.urdoesc_fecha,'%Y/%m/%d') AS realizada,
           substring_index(rdoesc.urdoesc_resultado, '/', 1)  AS resultado,
@@ -210,7 +210,7 @@ export class GenRepository {
           INNER JOIN cargos_profesionales cp ON cp.carg_key = prof.carg_key
           INNER JOIN secciones secc ON secc.secc_key = prof.secc_key
       WHERE
-          epi.numicu = '" . $numicu . "'
+          epi.numicu =  '${numicu}'
     ;
     ` 
     const result = await executeQueryOC(sentenciaSQL)
@@ -233,7 +233,7 @@ export class GenRepository {
         ctm7.ctma_desc) as grado ,
         mt.mati_desc as procedencia,
         s.secc_long_desc as seccion_realizadora,
-        u.usu_nombre || ' ' || u.usu_primer_apellido as profesioal,
+        -- u.usu_nombre || ' ' || u.usu_primer_apellido as profesioal,
         cp.carg_long_desc as perfil_profesional
       FROM
         episodios e
@@ -291,6 +291,7 @@ export class GenRepository {
       WHERE
           ui.uinfles_fechacrea >= oc.fecha_ocupa_ini
       AND (ui.uinfles_fechacrea >= oc.fecha_ocupa_fin  OR oc.fecha_ocupa_fin is null)
+      AND e.epi_fecha_alta IS NULL -- pacientes ingresados  
       ;
     `
     const result = await executeQueryOC(sentenciaSQL)
@@ -367,7 +368,8 @@ export class GenRepository {
         INNER JOIN campos_tablas_maestras CTMA on EP.esta_epi_key = CTMA.ctma_key
       WHERE
         oc.fecha_ocupa_fin IS NULL
-      AND LT.litr_fecha_prescripcion  BETWEEN '2018-06-05 00:00:00' AND CURRENT
+--      AND LT.litr_fecha_prescripcion  BETWEEN '2018-06-05 00:00:00' AND CURRENT
+        AND LT.litr_fecha_prescripcion BETWEEN (CURRENT - 1 UNITS YEAR) AND CURRENT
       ;
     `
     const result = await executeQueryOC(sentenciaSQL)
@@ -434,7 +436,7 @@ export class GenRepository {
       INNER JOIN orion_dba.ocupacion_camas oc on epi2.epi_key = oc.epi_key
       INNER JOIN orion_dba.camas c on oc.cama_key = c.cama_key
       WHERE
-      rdoesc.urdoesc_fecha BETWEEN '${dtDesde} 00:00:00' and '${dtHasta} 23:59:59'
+      rdoesc.urdoesc_fecha BETWEEN TO_DATE('${dtDesde}', '%Y-%m-%d') and TO_DATE('${dtHasta}', '%Y-%m-%d')
       ;
     `
     const result = await executeQueryOC(sentenciaSQL)

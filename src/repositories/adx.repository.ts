@@ -32,9 +32,9 @@ export class AdxRepository {
     FROM v_prop_cext_pac_ingr
     WHERE
         fechac IS NOT NULL
-    AND nlcx_ser_des NOT IN ( 'XFON', 'XADX' )
+    -- AND nlcx_ser_des NOT IN ( 'XFON', 'XADX' )
     AND LEFT( ncama, 3) BETWEEN '${camaDsd}' AND '${camaHst}'
-    AND fechac between '${dtDesde}' and '${dtHasta}'
+    AND fechac between TO_DATE('${dtDesde}', '%Y-%m-%d') and TO_DATE('${dtHasta}', '%Y-%m-%d')
     ORDER BY fechac, nlcx_horcita      ;
     ` 
     const result = await executeQueryIRIS(sentenciaSQL)
@@ -120,7 +120,7 @@ export class AdxRepository {
     return result
   }
 
-  async altasXDpto(desde: string, hasta: string) {
+  async altasXDpto(dtDesde: string, dtHasta: string) {
     const sentenciaSQL = `
       -- ALTAS POR HOSPITAL DE REFERENCIA (DPTO)
 
@@ -137,7 +137,7 @@ export class AdxRepository {
         INNER JOIN iriexp.des_althos da ON da.codigo = hp.dest_alta
       WHERE
       --  hp.fecha_alta BETWEEN TODAY -7 AND TODAY
-        hp.fecha_alta BETWEEN '${desde}' AND '${hasta}'
+        hp.fecha_alta BETWEEN  TO_DATE('${dtDesde}', '%Y-%m-%d') and TO_DATE('${dtHasta}', '%Y-%m-%d')
         AND hop.hosp_cod_crc = ( SELECT hop2.hosp_cod_crc
                                   FROM horefpac hop2
                                   WHERE hop2.paci_sip = pa.paci_sip

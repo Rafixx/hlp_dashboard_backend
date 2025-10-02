@@ -1,4 +1,6 @@
+
 import { AdxService } from "../services/adx.service";
+import { isValidISODate } from "../utils/helper";
 
 const adxService = new AdxService();
 
@@ -11,6 +13,14 @@ export const propuestasCitados = async (
   const dtHasta = req.query.dtHasta;
   const camaDsd = req.query.camaDsd;
   const camaHst = req.query.camaHst;
+
+  if (!dtDesde || !dtHasta || !camaDsd || !camaHst) {
+    return res.status(400).json({ error: 'Faltan parámetros requeridos' });
+  }
+  if (!isValidISODate(dtDesde) || !isValidISODate(dtHasta)) {
+    return res.status(400).json({ error: 'El formato de fecha debe ser YYYY-MM-DD' });
+  }
+
   try {
     const result = await adxService.propuestasCitados(dtDesde, dtHasta, camaDsd, camaHst);
     res.status(200).json(result);
@@ -52,12 +62,16 @@ export const altasXDpto = async (
   res: any,
   next: any
 ) => {
-  const { desde, hasta } = req.query;
+  const dtDesde = req.query.dtDesde;
+  const dtHasta = req.query.dtHasta;
+  if (!dtDesde || !dtHasta) {
+    return res.status(400).json({ error: 'Los parámetros desde y hasta son requeridos' });
+  }
+  if (!isValidISODate(dtDesde) || !isValidISODate(dtHasta)) {
+    return res.status(400).json({ error: 'El formato de fecha debe ser YYYY-MM-DD' });
+  }
   try {
-    if (!desde || !hasta) {
-      return res.status(400).json({ error: 'Los parámetros desde y hasta son requeridos' });
-    }
-    const result = await adxService.altasXDpto(desde as string, hasta as string);
+    const result = await adxService.altasXDpto(dtDesde as string, dtHasta as string);
     res.status(200).json(result);
   } catch (error) {
     next(error);
