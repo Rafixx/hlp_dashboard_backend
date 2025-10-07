@@ -2,8 +2,8 @@ import { CLIENT_RENEG_LIMIT } from "tls"
 import { executeQueryIRIS, executeQueryOC } from "../config/connection"
 
 export class FisioRepository {
-  // async intColabFisioPaciente( nhc: string ){
-  async intColabFisioPaciente(){
+  async intColabFisioPaciente( nhc: string ){
+  // async intColabFisioPaciente(){
     const sentenciaSQL = `
       -- INTERVENCIONES DE COLABORACION DE FISIOTERAPIA POR PACIENTE
       SELECT
@@ -33,10 +33,10 @@ export class FisioRepository {
       AND ELTR.eltr_key NOT IN (21, 27, 30)
       AND OC.fecha_ocupa_fin IS NULL
       AND SC.secc_key IN (15, 24, 26, 27, 28)
+      AND PAC.paci_nd = '${nhc}'
     GROUP BY INTERVENCION, FRECUENCIA, CONDICIONAL, PRESCRIPCION, SECCION
     ;
     ` 
-    // --  AND PAC.paci_nd = '${nhc}'
     const result = await executeQueryOC(sentenciaSQL)
     return result
   }
@@ -86,4 +86,45 @@ export class FisioRepository {
     const result = await executeQueryOC(sentenciaSQL)
     return result
   }  
+
+  async citasIngresados( dtDesde: string, dtHasta: string ){
+    const sentenciaSQL = `
+      -- CITAS DE PACIENTES INGRESADOS
+        SELECT
+      ncama AS CAMA,
+      CASE
+        WHEN LEFT( ncama, 3) <= 120 THEN '1A'
+        WHEN LEFT( ncama, 3) >= 201 AND LEFT( ncama, 3) <= 214 THEN '2A'
+        WHEN LEFT( ncama, 3) >= 216 AND LEFT( ncama, 3) <= 222 THEN '2B'
+        WHEN LEFT( ncama, 3) >= 301 AND LEFT( ncama, 3) <= 314 THEN '3A'
+        WHEN LEFT( ncama, 3) >= 315 THEN '3B'
+      END AS PLANTA,
+      CASE
+        WHEN TRIM(presta) = 'E2.1' THEN 'Primera'
+        WHEN TRIM(presta) = 'E2.2' THEN 'Sucesiva'
+        WHEN TRIM(presta) = 'E2.3' THEN 'Prueba'
+        WHEN TRIM(presta) = 'ET.1' THEN 'Telf Pri'
+        WHEN TRIM(presta) = 'ET.2' THEN 'Telf Suc'
+      END AS PRESTACION,
+      CASE
+        WHEN tecnica IS NULL THEN '' ELSE tecnica
+      END AS TECNICA,
+      numerohc AS NHC,
+      nombre || ' ' || apellid12 AS Paciente,
+      nomhospital AS HOSPITAL_DESTINO,
+      nomserv AS SERVICIO_DESTINO,
+      to_char(fechac,'%Y/%m/%d') AS FECHA_CITA,
+      nlcx_horcita AS HORA_CITA,
+      apellido1 AS GESTOR
+    FROM v_prop_cext_pac_ingr
+    WHERE
+        fechac IS NOT NULL
+    AND nlcx_ser_des NOT IN ( 'XFON', 'XADX' )
+    AND fechac between TO_DATE('${dtDesde}', '%Y-%m-%d') and TO_DATE('${dtHasta}', '%Y-%m-%d')  
+    ORDER BY fechac, nlcx_horcita
+    ;
+    ` 
+    const result = await executeQueryIRIS(sentenciaSQL)
+    return result
+  }
 }

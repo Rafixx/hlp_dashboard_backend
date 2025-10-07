@@ -285,6 +285,72 @@ Authorization: Bearer <token> (para endpoints protegidos)
 
 ---
 
+## 🛡️ PREVE - Medicina Preventiva
+
+### GET /api/preve/aislaIncidencias
+**Descripción:** Obtener incidencias de aislamiento por rango de fechas
+**Método:** GET
+**Query Parameters:**
+- `dtDesde` (required): Fecha desde (YYYY-MM-DD)
+- `dtHasta` (required): Fecha hasta (YYYY-MM-DD)
+**Respuesta:** Lista de incidencias de aislamiento en el período especificado
+
+### GET /api/preve/aislaPrevalencia
+**Descripción:** Obtener prevalencia de aislamientos por rango de fechas
+**Método:** GET
+**Query Parameters:**
+- `dtDesde` (required): Fecha desde (YYYY-MM-DD)
+- `dtHasta` (required): Fecha hasta (YYYY-MM-DD)
+**Respuesta:** Lista de datos de prevalencia de aislamientos
+
+### GET /api/preve/colonoPrevalente
+**Descripción:** Obtener datos de colonización prevalente por rango de fechas
+**Método:** GET
+**Query Parameters:**
+- `dtDesde` (required): Fecha desde (YYYY-MM-DD)
+- `dtHasta` (required): Fecha hasta (YYYY-MM-DD)
+**Respuesta:** Lista de datos de colonización prevalente
+
+### GET /api/preve/frotisPendientes
+**Descripción:** Obtener frotis pendientes de procesamiento
+**Método:** GET
+**Respuesta:** Lista de frotis pendientes con información de pacientes y fechas
+
+### GET /api/preve/heridas
+**Descripción:** Obtener información sobre heridas desde medicina preventiva
+**Método:** GET
+**Respuesta:** Lista de heridas con datos relevantes para medicina preventiva
+
+### GET /api/preve/infecciones
+**Descripción:** Obtener información sobre infecciones activas
+**Método:** GET
+**Respuesta:** Lista de infecciones con detalles clínicos y epidemiológicos
+
+### GET /api/preve/intervencioinesColaboracion
+**Descripción:** Obtener intervenciones de colaboración en medicina preventiva
+**Método:** GET
+**Respuesta:** Lista de intervenciones colaborativas entre servicios
+
+### GET /api/preve/vacunas
+**Descripción:** Obtener información de vacunas administradas por rango de fechas
+**Método:** GET
+**Query Parameters:**
+- `dtDesde` (required): Fecha desde (YYYY-MM-DD)
+- `dtHasta` (required): Fecha hasta (YYYY-MM-DD)
+**Respuesta:** Lista de vacunas administradas en el período especificado
+
+### GET /api/preve/vacunasFechaInicio
+**Descripción:** Obtener vacunas programadas por fecha de inicio
+**Método:** GET
+**Respuesta:** Lista de vacunas con sus fechas de inicio programadas
+
+### GET /api/preve/vacunasPendientes
+**Descripción:** Obtener vacunas pendientes de administración
+**Método:** GET
+**Respuesta:** Lista de vacunas pendientes con información de pacientes y fechas programadas
+
+---
+
 ## ⚠️ Manejo de Errores
 
 Todos los endpoints devuelven errores en el siguiente formato:
@@ -335,6 +401,20 @@ fetch('http://localhost:3000/api/gen/escalas?dtDesde=2024-01-01&dtHasta=2024-12-
 ### Obtener altas por departamento
 ```javascript
 fetch('http://localhost:3000/api/adx/altasXDpto?desde=2024-01-01&hasta=2024-01-31')
+  .then(response => response.json())
+  .then(data => console.log(data));
+```
+
+### Obtener vacunas por rango de fechas
+```javascript
+fetch('http://localhost:3000/api/preve/vacunas?dtDesde=2024-01-01&dtHasta=2024-12-31')
+  .then(response => response.json())
+  .then(data => console.log(data));
+```
+
+### Obtener frotis pendientes
+```javascript
+fetch('http://localhost:3000/api/preve/frotisPendientes')
   .then(response => response.json())
   .then(data => console.log(data));
 ```

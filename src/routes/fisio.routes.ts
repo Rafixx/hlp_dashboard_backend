@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { intColabFisio, intColabFisioPaciente } from "../controllers/fisio.controller";
+import { citasIngresados, intColabFisio, intColabFisioPaciente } from "../controllers/fisio.controller";
 
 const router = Router();
 
@@ -8,5 +8,7 @@ const router = Router();
 router.get("/intColabFisioPaciente/:nhc", intColabFisioPaciente);
 // Endpoint para obtener todas las intervenciones de colaboración fisioterapia  
 router.get("/intColabFisio", intColabFisio);
+// Endpoint para obtener citas de ingresados en un rango de fechas
+router.get("/citasIngresados", citasIngresados);
 
 export { router as fisioRoutes };
