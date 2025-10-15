@@ -351,6 +351,64 @@ Authorization: Bearer <token> (para endpoints protegidos)
 
 ---
 
+## 🛏️ Mapa de Camas
+
+### GET /api/mapaCamas/mapaCamas
+**Descripción:** Obtener el mapa completo de camas del hospital
+**Método:** GET
+**Respuesta:** Lista de camas con su planta y ubicación:
+```json
+[
+  {
+    "PLANTA": "string",
+    "CAMA": "string"
+  }
+]
+```
+
+### GET /api/mapaCamas/pacientesXServicio
+**Descripción:** Obtener el número de pacientes ingresados por servicio médico
+**Método:** GET
+**Respuesta:** Agregación de pacientes por servicio con total
+
+### GET /api/mapaCamas/camasInhabilitadas
+**Descripción:** Obtener listado de camas inhabilitadas
+**Método:** GET
+**Respuesta:** Lista de camas inhabilitadas con habitación y número de cama
+
+### GET /api/mapaCamas/camasOcupadas
+**Descripción:** Obtener información de camas ocupadas con datos del paciente
+**Método:** GET
+**Respuesta:** Lista de camas ocupadas con información detallada:
+```json
+[
+  {
+    "CAMA": "string",
+    "SEXO": "string",
+    "SERV_MED": "string",
+    "NHC": "string",
+    "PACIENTE": "string"
+  }
+]
+```
+
+### GET /api/mapaCamas/camasGrua
+**Descripción:** Obtener camas que requieren grúa para movilización
+**Método:** GET
+**Respuesta:** Lista de camas con grúa y fecha de registro
+
+### GET /api/mapaCamas/aisladosPreve
+**Descripción:** Obtener pacientes aislados por medicina preventiva
+**Método:** GET
+**Respuesta:** Lista de camas con tipo de aislamiento preventivo
+
+### GET /api/mapaCamas/aisladosEnf
+**Descripción:** Obtener pacientes aislados por enfermería
+**Método:** GET
+**Respuesta:** Lista de camas con tipo de aislamiento de enfermería y observaciones
+
+---
+
 ## ⚠️ Manejo de Errores
 
 Todos los endpoints devuelven errores en el siguiente formato:
@@ -415,6 +473,20 @@ fetch('http://localhost:3000/api/preve/vacunas?dtDesde=2024-01-01&dtHasta=2024-1
 ### Obtener frotis pendientes
 ```javascript
 fetch('http://localhost:3000/api/preve/frotisPendientes')
+  .then(response => response.json())
+  .then(data => console.log(data));
+```
+
+### Obtener mapa de camas
+```javascript
+fetch('http://localhost:3000/api/mapaCamas/mapaCamas')
+  .then(response => response.json())
+  .then(data => console.log(data));
+```
+
+### Obtener camas ocupadas
+```javascript
+fetch('http://localhost:3000/api/mapaCamas/camasOcupadas')
   .then(response => response.json())
   .then(data => console.log(data));
 ```
