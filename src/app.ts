@@ -12,6 +12,7 @@ import { medRoutes } from './routes/med.routes';
 import { tscRoutes } from './routes/tsc.routes';
 import { preveRoutes } from './routes/preve.route';
 import { mapaCamasRoutes } from './routes/mapaCamas.routes';
+import { perRoutes } from './routes/per.routes';
 
 const app = express();
 
@@ -33,6 +34,7 @@ app.use('/api/med', medRoutes);
 app.use('/api/tsc', tscRoutes);
 app.use('/api/preve', preveRoutes);
 app.use('/api/mapaCamas', mapaCamasRoutes);
+app.use('/api/per', perRoutes);
 
 // Middleware de manejo de errores
 app.use(errorHandler);
